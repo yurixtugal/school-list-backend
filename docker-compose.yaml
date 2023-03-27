@@ -11,7 +11,7 @@ services:
       - DATABASE_PORT=${DATABASE_PORT}
       - DATABASE_USER=${DATABASE_MYSQL_USER}
       - DATABASE_PASSWORD=${DATABASE_MYSQL_PASSWORD}
-      - DATABASE_NAME=${MYSQL_DATABASE}
+      - DATABASE_NAME=${DATABASE_MYSQL_DATABASE}
     ports:
       - "3000:3000"
     depends_on:
@@ -21,8 +21,8 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}   # establece la contraseña de root
-      MYSQL_DATABASE: ${MYSQL_DATABASE}     # crea una base de datos con este nombre
+      MYSQL_ROOT_PASSWORD: ${DATABASE_MYSQL_PASSWORD}   # establece la contraseña de root
+      MYSQL_DATABASE: ${DATABASE_MYSQL_DATABASE}     # crea una base de datos con este nombre
     ports:
       - 3306:3306
     volumes:
