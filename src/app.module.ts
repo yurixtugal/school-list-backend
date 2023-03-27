@@ -17,9 +17,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
           type: 'mysql',
           host: configService.get<string>('NODE_ENV')==='production'?configService.get<string>('DATABASE_HOST'):'localhost',
           port: configService.get<number>('DATABASE_PORT'),
-          username: configService.get<string>('MYSQL_USER'),
-          password: configService.get<string>('MYSQL_PASSWORD'),
-          database: configService.get<string>('MYSQL_DATABASE'),
+          username: configService.get<string>('DATABASE_MYSQL_USER'),
+          password: configService.get<string>('DATABASE_MYSQL_PASSWORD'),
+          database: configService.get<string>('DATABASE_MYSQL_DATABASE'),
           entities: [__dirname+`/**/*.entity{.ts,.js}`],
           synchronize: true
         }

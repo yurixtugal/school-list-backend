@@ -1,4 +1,4 @@
-version: '3'
+version: '3.1'
 
 services:
   app:
@@ -9,8 +9,8 @@ services:
       - PORT=${PORT}
       - DATABASE_HOST=${DATABASE_HOST}
       - DATABASE_PORT=${DATABASE_PORT}
-      - DATABASE_USER=${MYSQL_USER}
-      - DATABASE_PASSWORD=${MYSQL_PASSWORD}
+      - DATABASE_USER=${DATABASE_MYSQL_USER}
+      - DATABASE_PASSWORD=${DATABASE_MYSQL_PASSWORD}
       - DATABASE_NAME=${MYSQL_DATABASE}
     ports:
       - "3000:3000"
