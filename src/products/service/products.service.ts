@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Product } from '../entity/product.entity';
 import { CreateProductDto, UpdateProductDto } from '../dto/product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { In, Like, Repository } from 'typeorm';
 import { BrandsService } from 'src/products/service/brands.service';
 
 @Injectable()
@@ -12,6 +12,24 @@ export class ProductsService {
 
   getAllProducts(): Promise<Product[]> {
     return this.productRepository.find({relations:["brand"]});
+  }
+
+  async getProductsByName(arrNamesProducts: string[], arrQuantities: number[]){
+    let arrProducts = [];
+    for (let i = 0; i < arrNamesProducts.length; i++){
+      let newArrProducts = await this.productRepository.find({
+          where: {title: Like(`%${arrNamesProducts[i]}%`)},
+          order: {price: 'ASC'}
+        });
+        const productsWithQuantity = newArrProducts.map(product => {
+          return {
+            ...product,
+            quantity: arrQuantities[i],
+          };
+        });
+        if (productsWithQuantity && productsWithQuantity.length > 0) arrProducts.push(productsWithQuantity)
+    }
+    return arrProducts
   }
 
   getProductsByIds(arrIds: number[]){

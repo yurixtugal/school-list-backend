@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
-import { CreateSchoolListDto } from '../dto/schoolList.dto';
+import { CreateSchoolListDto, SchoolListEstimatedDto } from '../dto/schoolList.dto';
 import { SchoolListService } from '../service/school-list.service';
 
 @Controller('school-list')
@@ -20,6 +20,11 @@ export class SchoolListController {
     @Post()
     createSchoolList(@Body() createSchoolListDto: CreateSchoolListDto){
         return this.schoolListService.createSchoolList(createSchoolListDto)
+    }
+
+    @Post("EstimateSchoolList")
+    estimateSchoolList(@Body() schoolListEstimated: SchoolListEstimatedDto){
+        return this.schoolListService.getSchoolListEstimated(schoolListEstimated)
     }
 
 }

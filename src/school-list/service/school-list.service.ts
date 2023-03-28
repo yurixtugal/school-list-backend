@@ -4,7 +4,7 @@ import { Product } from 'src/products/entity/product.entity';
 import { ProductsService } from 'src/products/service/products.service';
 import { GradesService } from 'src/schools/service/grades.service';
 import { Repository } from 'typeorm';
-import { CreateSchoolListDto } from '../dto/schoolList.dto';
+import { CreateSchoolListDto, SchoolListEstimatedDto } from '../dto/schoolList.dto';
 import { ProductSchoolList } from '../entity/product-list-school.entity';
 import { SchoolList } from '../entity/school-list.entity';
 
@@ -54,6 +54,26 @@ export class SchoolListService {
         const finalResult = await this.productSchoolListRepository.save(rpta)
 
         return this.getSchoolListById(resultSchoolList.id)
+    }
+
+    async getSchoolListEstimated(schoolListEstimated: SchoolListEstimatedDto){
+        
+        const arrProductNames = schoolListEstimated.products.map(prod => prod.productName);
+        const arrProductQuantity = schoolListEstimated.products.map(prod => prod.quantity);
+        const arrProducts = await this.productsService.getProductsByName(arrProductNames,arrProductQuantity)       
+        console.log(arrProducts)
+        let num = 0;
+        const newProducts = arrProducts.map(arrProductsDetail => {
+            num++;
+            return {
+                "Min":{"ProductName": arrProductsDetail[0].title, "Price":parseFloat(arrProductsDetail[0].price), "quantity": arrProductsDetail[0].quantity},
+                "Max":{"ProductName": arrProductsDetail[arrProductsDetail.length-1].title, "Price":parseFloat(arrProductsDetail[arrProductsDetail.length-1].price),  "quantity": arrProductsDetail[arrProductsDetail.length-1].quantity},
+                "Middle":{"ProductName": arrProductsDetail[Math.round(arrProductsDetail.length/2)].title, "Price":parseFloat(arrProductsDetail[Math.round(arrProductsDetail.length/2)].price),  "quantity": arrProductsDetail[Math.round(arrProductsDetail.length/2)].quantity}
+            }
+        })
+
+        return newProducts
+
     }
 
 

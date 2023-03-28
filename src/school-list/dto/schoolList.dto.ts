@@ -49,6 +49,18 @@ export class CreateProductSchooListDto {
   quantity: number;
 }
 
+export class SchoolListEstimatedDto {
+  products: DetailSchoolListEstimatedDto[]
+}
+
+export class DetailSchoolListEstimatedDto {
+  @IsString()
+  productName: string;
+
+  @IsInt()
+  quantity: number;
+}
+
 /*
 export class UpdateBrandDto {
   @IsString()
