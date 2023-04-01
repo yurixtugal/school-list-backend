@@ -5,6 +5,7 @@ import { SchoolsModule } from './schools/schools.module';
 import { SchoolListModule } from './school-list/school-list.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -23,14 +24,14 @@ import { UsersModule } from './users/users.module';
           database: configService.get<string>('DATABASE_MYSQL_DATABASE'),
           entities: [__dirname+`/**/*.entity{.ts,.js}`],
           synchronize: true,
-          logging: true
         }
       }
     }),
     ProductsModule,
     SchoolsModule,
     SchoolListModule,
-    UsersModule],
+    UsersModule,
+    AuthModule],
   controllers: [],
   providers: [],
 })
