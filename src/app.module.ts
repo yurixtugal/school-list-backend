@@ -4,6 +4,7 @@ import {  TypeOrmModule } from '@nestjs/typeorm'
 import { SchoolsModule } from './schools/schools.module';
 import { SchoolListModule } from './school-list/school-list.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { UsersModule } from './users/users.module';
 
 
 @Module({
@@ -28,7 +29,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
     ProductsModule,
     SchoolsModule,
-    SchoolListModule],
+    SchoolListModule,
+    UsersModule],
   controllers: [],
   providers: [],
 })
