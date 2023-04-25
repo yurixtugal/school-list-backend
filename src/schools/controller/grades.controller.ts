@@ -19,6 +19,11 @@ export class GradesController {
         return this.gradeService.getGradeById(id);
     }
 
+    @Get('/school/:id')
+    getGradeBySchoolId(@Param("id",ParseIntPipe) id: number){
+        return this.gradeService.getGradeBySchoolId(id);
+    }
+
     @Post()
     createGrade(@Body() createGradeDTO: CreateGradeDto){
         return this.gradeService.createGrade(createGradeDTO);

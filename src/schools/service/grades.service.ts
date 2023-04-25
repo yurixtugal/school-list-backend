@@ -7,7 +7,17 @@ import { Grade } from '../entity/grade.entity';
 @Injectable()
 export class GradesService {
 
+
     constructor(@InjectRepository(Grade) private  gradeRepository: Repository<Grade>){}
+
+    getGradeBySchoolId(id: number) {
+        console.log(id)
+        return this.gradeRepository.find({
+            where:{schoolId: id},
+            relations:["school"]
+        });
+    }
+
 
     getAllGrades(){
         return this.gradeRepository.find();
