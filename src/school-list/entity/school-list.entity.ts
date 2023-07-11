@@ -17,6 +17,9 @@ export class SchoolList {
   @Column({ type: 'int',nullable: true})
   gradeId: number
 
+  @Column({ type: 'int',nullable: true})
+  year: number
+
   @ManyToOne(()=>Grade,(grade)=>grade.schoolLists)
   grade: Grade
 

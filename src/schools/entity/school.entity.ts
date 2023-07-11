@@ -12,6 +12,9 @@ export class School {
   @Column({ nullable: true, type: 'varchar', length: 500 })
   description: string;
 
+  @Column({ nullable: true, type: 'varchar', length: 500 })
+  image: string;
+
   @Column({ nullable: true, type: 'varchar', length: 700 })
   address: string;
 
