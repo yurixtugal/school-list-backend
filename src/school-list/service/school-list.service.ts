@@ -14,6 +14,14 @@ export class SchoolListService {
         return this.schoolListRepository.findOne({
             where:{
                 id: id
+            },
+            relations: {
+                productSchoolLists: {
+                    product: true
+                },
+                grade:{
+                    school: true
+                }                                                        
             }
         });
     }
@@ -24,7 +32,11 @@ export class SchoolListService {
     @Inject(ProductsService) private productsService: ProductsService){}
 
     getAllSchoolList(){
-        return this.schoolListRepository.find();
+        return this.schoolListRepository.find({relations: {
+                                                            grade:{
+                                                                school: true
+                                                            }                                                        
+                                                            }});
     }
 
    async createSchoolList(createSchoolListDto: CreateSchoolListDto){

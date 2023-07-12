@@ -23,6 +23,6 @@ export class SchoolList {
   @ManyToOne(()=>Grade,(grade)=>grade.schoolLists)
   grade: Grade
 
-  @OneToMany(()=>ProductSchoolList, (productSchoolLists)=> productSchoolLists.product)
+  @OneToMany(()=>ProductSchoolList, (productSchoolLists)=> productSchoolLists.schoolList)
   productSchoolLists: ProductSchoolList[]
 }

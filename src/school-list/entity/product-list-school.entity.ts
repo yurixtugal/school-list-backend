@@ -1,6 +1,7 @@
 import { Product } from "src/products/entity/product.entity";
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
 import { SchoolList } from "./school-list.entity";
+import { School } from "src/schools/entity/school.entity";
 
 
 @Entity()
