@@ -10,10 +10,28 @@ import { SchoolList } from '../entity/school-list.entity';
 
 @Injectable()
 export class SchoolListService {
+    
     getSchoolListById(id: number) {
         return this.schoolListRepository.findOne({
             where:{
                 id: id
+            },
+            relations: {
+                productSchoolLists: {
+                    product: true
+                },
+                grade:{
+                    school: true
+                }                                                        
+            }
+        });
+    }
+
+    async getSchoolListByIdGrade(idGrade: number) {
+        const result = await this.schoolListRepository.query("select sl.id  from school_list sl  where gradeId = ? and year = (select max(sl2.`year`) from school_list sl2 where gradeId = ?)",[idGrade,idGrade])
+        return this.schoolListRepository.findOne({
+            where:{
+                id: result[0].id
             },
             relations: {
                 productSchoolLists: {

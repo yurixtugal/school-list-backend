@@ -14,6 +14,10 @@ export class SchoolList {
   @Column({ nullable: true, type: 'varchar', length: 500 })
   description: string;
 
+  @Column({ nullable: true, type: 'varchar', length: 500 })
+  file: string;
+
+
   @Column({ type: 'int',nullable: true})
   gradeId: number
 

@@ -12,6 +12,11 @@ export class SchoolListController {
         return this.schoolListService.getAllSchoolList();
     }
 
+    @Get("schoolListByGrade/:idGrade")
+    getSchoolListByGradeId(@Param("idGrade", ParseIntPipe) idGrade: number){
+        return this.schoolListService.getSchoolListByIdGrade(idGrade)
+    }
+
     @Get(":id")
     getSchoolListById(@Param("id", ParseIntPipe) id: number){
         return this.schoolListService.getSchoolListById(id)
@@ -26,5 +31,7 @@ export class SchoolListController {
     estimateSchoolList(@Body() schoolListEstimated: SchoolListEstimatedDto){
         return this.schoolListService.getSchoolListEstimated(schoolListEstimated)
     }
+
+
 
 }

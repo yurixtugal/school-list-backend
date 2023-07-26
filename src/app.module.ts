@@ -10,7 +10,8 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -24,6 +25,7 @@ import { AuthModule } from './auth/auth.module';
           database: configService.get<string>('DATABASE_MYSQL_DATABASE'),
           entities: [__dirname+`/**/*.entity{.ts,.js}`],
           synchronize: true,
+          logging: true
         }
       }
     }),

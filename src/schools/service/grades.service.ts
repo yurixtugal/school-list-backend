@@ -1,8 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateGradeDto, UpdateGradeDto } from '../dto/grade.dto';
 import { Grade } from '../entity/grade.entity';
+import { SchoolListService } from 'src/school-list/service/school-list.service';
 
 @Injectable()
 export class GradesService {
@@ -10,12 +11,19 @@ export class GradesService {
 
     constructor(@InjectRepository(Grade) private  gradeRepository: Repository<Grade>){}
 
-    getGradeBySchoolId(id: number) {
-        console.log(id)
-        return this.gradeRepository.find({
+    async getGradeBySchoolId(id: number) {
+        const lstGrades = await this.gradeRepository.find({
             where:{schoolId: id},
             relations:["school"]
         });
+        for (let i = 0; i < lstGrades.length; i++){
+            const grade = lstGrades[i]
+            const result = await this.gradeRepository.query("select sl.file  from school_list sl  where gradeId = ? and year = (select max(sl2.`year`) from school_list sl2 where gradeId = ?)",[grade.id, grade.id])
+            lstGrades[i]["fileList"] = result.length > 0? result[0].file:null
+            console.log(lstGrades[i])
+        }
+        return lstGrades;
+
     }
 
 
