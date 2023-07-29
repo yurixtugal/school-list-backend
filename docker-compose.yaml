@@ -1,21 +1,7 @@
 version: '3.1'
 
 services:
-  app:
-    build:
-      context: .
-    environment:
-      - NODE_ENV=${NODE_ENV}
-      - PORT=${PORT}
-      - DATABASE_HOST=${DATABASE_HOST}
-      - DATABASE_PORT=${DATABASE_PORT}
-      - DATABASE_USER=${DATABASE_MYSQL_USER}
-      - DATABASE_PASSWORD=${DATABASE_MYSQL_PASSWORD}
-      - DATABASE_NAME=${DATABASE_MYSQL_DATABASE}
-    ports:
-      - "3000:3000"
-    depends_on:
-      - db
+
   db:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
@@ -26,7 +12,7 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/var/lib/mmysql
     env_file:
       - .env
 
