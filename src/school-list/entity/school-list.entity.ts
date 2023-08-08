@@ -1,6 +1,7 @@
 import { Grade } from "src/schools/entity/grade.entity";
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from "typeorm";
 import { ProductSchoolList } from "./product-list-school.entity";
+import { CategorySchoolList } from "./category-school-list.entity";
 
 
 @Entity()
@@ -29,4 +30,7 @@ export class SchoolList {
 
   @OneToMany(()=>ProductSchoolList, (productSchoolLists)=> productSchoolLists.schoolList)
   productSchoolLists: ProductSchoolList[]
+
+  @OneToMany(()=>CategorySchoolList, (categorySchoolLists)=> categorySchoolLists.schoolList)
+  categorySchoolLists: CategorySchoolList[]
 }

@@ -7,6 +7,8 @@ import { Repository } from 'typeorm';
 import { CreateSchoolListDto, SchoolListEstimatedDto } from '../dto/schoolList.dto';
 import { ProductSchoolList } from '../entity/product-list-school.entity';
 import { SchoolList } from '../entity/school-list.entity';
+import { CategorySchoolList } from '../entity/category-school-list.entity';
+import { DetailProductCategory } from '../entity/detail-product-category.entity';
 
 @Injectable()
 export class SchoolListService {
@@ -22,13 +24,21 @@ export class SchoolListService {
                 },
                 grade:{
                     school: true
+                },
+                categorySchoolLists: {
+                    detailProductCategory: true
                 }                                                        
             }
         });
     }
 
     async getSchoolListByIdGrade(idGrade: number) {
+        
+        console.log(idGrade)
         const result = await this.schoolListRepository.query("select sl.id  from school_list sl  where gradeId = ? and year = (select max(sl2.`year`) from school_list sl2 where gradeId = ?)",[idGrade,idGrade])
+        
+        console.log("aaa",result)
+
         return this.schoolListRepository.findOne({
             where:{
                 id: result[0].id
@@ -39,6 +49,9 @@ export class SchoolListService {
                 },
                 grade:{
                     school: true
+                },
+                categorySchoolLists: {
+                    detailProductCategory: true
                 }                                                        
             }
         });
@@ -46,6 +59,8 @@ export class SchoolListService {
 
     constructor(@InjectRepository(SchoolList) private schoolListRepository: Repository<SchoolList>,
     @InjectRepository(ProductSchoolList) private productSchoolListRepository: Repository<ProductSchoolList>,
+    @InjectRepository(CategorySchoolList) private categorySchoolListRepository: Repository<CategorySchoolList>,
+    @InjectRepository(DetailProductCategory) private detailProductCategoryRepository: Repository<DetailProductCategory>,
     @Inject(GradesService ) private gradeService: GradesService,
     @Inject(ProductsService) private productsService: ProductsService){}
 
@@ -65,23 +80,63 @@ export class SchoolListService {
             return gradeFound
         }
         let productSchool = createSchoolListDto.lstProductSchool;
-        let arrIds = productSchool.map(ps => {
-            return  ps.productId
-        })
-        let setIds = new Set(arrIds)
-        arrIds = Array.from(setIds)
-        let arrProducts = await this.productsService.getProductsByIds(arrIds)
-        if ( arrProducts.length !== arrIds.length){
-            return new HttpException("Some products don't exists",HttpStatus.CONFLICT)
+        let categorySchool = createSchoolListDto.lstCategorySchool;
+        
+        if (productSchool){
+            let arrIds = productSchool.map(ps => {
+                return  ps.productId
+            })
+            let setIds = new Set(arrIds)
+            arrIds = Array.from(setIds)
+            let arrProducts = await this.productsService.getProductsByIds(arrIds)
+            if ( arrProducts.length !== arrIds.length){
+                return new HttpException("Some products don't exists",HttpStatus.CONFLICT)
+            }
         }
         const newSchoolList =  this.schoolListRepository.create(createSchoolListDto)
         const resultSchoolList = await this.schoolListRepository.save(newSchoolList)
-        productSchool = productSchool.map(ps => {
-            return  {  schoolListId: resultSchoolList.id,...ps}
-        })
-        const rpta = this.productSchoolListRepository.create(productSchool)
         
-        const finalResult = await this.productSchoolListRepository.save(rpta)
+        if (productSchool){
+            productSchool = productSchool.map(ps => {
+                return  {  schoolListId: resultSchoolList.id,...ps}
+            })
+            const rpta = this.productSchoolListRepository.create(productSchool)
+            
+    
+            const finalResult = await this.productSchoolListRepository.save(rpta)
+        }
+        
+        for (let i = 0; i < categorySchool.length;i++){
+            let cs = categorySchool[i]
+            cs = {  schoolListId: resultSchoolList.id,...cs}
+            
+            const rptaCategory = this.categorySchoolListRepository.create(cs)
+
+            const finalResultCategory = await this.categorySchoolListRepository.save(rptaCategory)
+
+            console.log(finalResultCategory)
+
+            let detailCategoryProduct = cs.lstDetailCategoryProduct
+
+            detailCategoryProduct = detailCategoryProduct.map( dcp => {
+                return {categorySchoolListId: finalResultCategory.id,...dcp}
+            })
+
+            console.log(detailCategoryProduct)
+
+            const rptaDetailCategory = this.detailProductCategoryRepository.create(detailCategoryProduct)
+
+            const finalResultDetailCategory = await this.detailProductCategoryRepository.save(rptaDetailCategory)
+
+            //detailCategoryProduct = {  categorySchoolListId: finalResultCategory.id,...detailCategoryProduct}
+
+        }
+
+       /* categorySchool = categorySchool.map(cs => {
+            return  {  schoolListId: resultSchoolList.id,...cs}
+        }) */
+        
+
 
         return this.getSchoolListById(resultSchoolList.id)
     }
