@@ -25,3 +25,18 @@ insert into school (name, description, image, address) values ('Academia Mágica
 insert into school (name, description, image, address) values ('Instituto Durmstrang', 'Colegio de magía y hechicería de Brasil','inserta tu enlace aqui','Selva amazónica, Brasil');
 insert into school (name, description, image, address) values ('Castelobruxo', 'Colegio de magía y hechicería de Escandinavia','inserta tu enlace aqui','Escandinavia; alcances más septentrionales, ya sea de Noruega o Sweden');
 insert into school (name, description, image, address) values ('Colegio Hogwarts de Magia y Hechicería', 'Colegio de magía y hechicería de Escocia','inserta tu enlace aqui','Tierras Altas de Escocia');
+
+-- Replace your schoolId for each school you have
+
+INSERT INTO grade (name,section,schoolId,year) VALUES
+	 ('Primer grado','Primaria',6,1),
+	 ('Segundo grado','Primaria',6,2),
+	 ('Tercer grado','Primaria',6,3),
+	 ('Cuarto grado','Primaria',6,4),
+	 ('Quinto grado','Primaria',6,5),
+	 ('Sexto grado','Primaria',6,6),
+	 ('Primer grado','Secundaria',6,1),
+	 ('Segundo grado','Secundaria',6,2),
+	 ('Tercer grado','Secundaria',6,3),
+	 ('Cuarto grado','Secundaria',6,4);
+

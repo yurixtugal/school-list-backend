@@ -4,7 +4,7 @@ import { UsersService } from '../service/users.service';
 import { ApiKeyGuard } from 'src/auth/guards/api-key.guard';
 import { Public } from 'src/auth/decorators/public.decorator';
 
-@UseGuards(ApiKeyGuard)
+
 @Controller('users')
 export class UsersController {
 
@@ -16,6 +16,7 @@ export class UsersController {
         return this.userService.createUser(createUserDto)
     }
 
+    @UseGuards(ApiKeyGuard)
     @Get(':email')
     @Public()
     getByEmail(@Param('email') email: string){

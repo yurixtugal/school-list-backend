@@ -24,11 +24,29 @@ export class UsersService {
         return this.userRepository.save(newUser)
     }
 
-    async findUserByEmail(email: string): Promise<User>{
-        return await this.userRepository.findOne({
+
+    async findUserByEmailWithPassword(email: string): Promise<any>{
+        
+        let user = await this.userRepository.findOne({
             where:{
                 email
             }})
+        
+        return user;
+    }
+
+    async findUserByEmail(email: string){
+        
+        let user = await this.userRepository.findOne({
+            where:{
+                email
+            }})
+        
+        if (!user){
+            return new HttpException("User not found", HttpStatus.NOT_FOUND)
+        }
+        const { password, ...result } = user;
+        return result;
     }
 
 }

@@ -12,7 +12,7 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - db_data:/var/lib/mmysql
+      - db_data:/var/lib/xz
     env_file:
       - .env
 
