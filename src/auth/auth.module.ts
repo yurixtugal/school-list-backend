@@ -15,7 +15,8 @@ import { ApiKeyGuard } from './guards/api-key.guard';
     inject: [ConfigService],
     useFactory: (configService: ConfigService) => ({
       secret: configService.get<string>('JWT_SECRET'),
-      global: true
+      global: true,
+      signOptions: {expiresIn: '1h'}
     })
   })] 
 })
